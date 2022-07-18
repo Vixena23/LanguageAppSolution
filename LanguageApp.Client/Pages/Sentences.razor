@@ -1,0 +1,47 @@
+﻿@page "/"
+@inherits SentencesBase
+
+<PageTitle>Zdania</PageTitle>
+
+@if (Sentences == null)
+{
+    <div>Loading...</div>
+}
+else
+{
+    <h3 class="mb-3">Zdania</h3>
+    <button @onclick="ShowModal" class="btn btn-primary">Dodaj</button>
+        <hr>
+    var sentenceCount = Sentences.Count();
+    @if (sentenceCount > 0)
+    {
+        @foreach (var item in Sentences)
+        {      
+            <div class="col">
+                <div class="row m-2">
+                    <div class="col-2">
+                        <p>Oryginał:</p>
+                    </div>
+                    <div class="col-10">
+                        <p>@item.OryginalText</p>
+                    </div>
+                </div>  
+                <div class="row m-2">
+                    <div class="col-2">
+                        <p>Tłumaczenie:</p>
+                    </div>
+                    <div class="col-10">
+                        <p>@item.TranslateText</p>
+                    </div>
+                </div>
+                <div class="row m-1 mb-5">@item.CategoryName, @item.TagName</div>
+            </div>    
+            <hr>
+        }
+    }
+    else
+    {
+        <h4 class="mb-3">Aktualnie brak zdań do wyświetlenia</h4>
+    }
+}
+
