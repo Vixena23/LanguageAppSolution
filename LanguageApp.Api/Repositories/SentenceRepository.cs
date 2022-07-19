@@ -1,5 +1,6 @@
 ﻿using LanguageApp.Api.Data;
 using LanguageApp.Api.Entity;
+using LanguageApp.Api.Extensions;
 using LanguageApp.Api.Repositories.Contracts;
 using LanguageApp.Models.Dtos;
 using Microsoft.EntityFrameworkCore;
@@ -22,10 +23,10 @@ namespace LanguageApp.Api.Repositories
                 OryginalText = sentenceToAddDto.OryginalText,
                 TranslateText = sentenceToAddDto.TranslateText,
                 CategoryId = sentenceToAddDto.CategoryId,
-                TagId = sentenceToAddDto.TagId
             };
 
             var result = await _languageAppDbContext.Sentences.AddAsync(sentence);
+
             await _languageAppDbContext.SaveChangesAsync();
             return result.Entity;
 
@@ -47,21 +48,26 @@ namespace LanguageApp.Api.Repositories
         public async Task<SentenceDto> GetSentence(int id)
         {
             return await (from sentence in _languageAppDbContext.Sentences
-                                  join tag in _languageAppDbContext.Tags
-                                  on sentence.TagId equals tag.Id
                                   join category in _languageAppDbContext.Categories
                                   on sentence.CategoryId equals category.Id
                                   where sentence.Id == id
                                   select new SentenceDto
                                   {
                                       Id = sentence.Id,
-                                      TagId = tag.Id,
                                       CategoryId = category.Id,
                                       OryginalText = sentence.OryginalText,
                                       TranslateText = sentence.TranslateText,
                                       CategoryName = category.Name,
-                                      TagName = tag.Name,
-                                      TagColor = tag.Color
+                                      Tags = (from tag in _languageAppDbContext.Tags
+                                              join sentenceTags in _languageAppDbContext.SentencesTags
+                                              on tag.Id equals sentenceTags.TagId
+                                              where sentenceTags.SentenceId == sentence.Id
+                                              select new TagDto 
+                                              { 
+                                                Id = tag.Id,
+                                                Name = tag.Name,
+                                                Color = tag.Color
+                                              }).ToList()
                                   }).SingleOrDefaultAsync();
 
         }
@@ -69,20 +75,25 @@ namespace LanguageApp.Api.Repositories
         public async Task<IEnumerable<SentenceDto>> GetSentences()
         {
             return await (from sentence in _languageAppDbContext.Sentences
-                          join tag in _languageAppDbContext.Tags
-                          on sentence.TagId equals tag.Id
                           join category in _languageAppDbContext.Categories
                           on sentence.CategoryId equals category.Id
                           select new SentenceDto
                           {
                               Id = sentence.Id,
-                              TagId = tag.Id,
                               CategoryId = category.Id,
                               OryginalText = sentence.OryginalText,
                               TranslateText = sentence.TranslateText,
                               CategoryName = category.Name,
-                              TagName = tag.Name,
-                              TagColor = tag.Color
+                              Tags = (from tag in _languageAppDbContext.Tags
+                                      join sentenceTags in _languageAppDbContext.SentencesTags
+                                      on tag.Id equals sentenceTags.TagId
+                                      where sentenceTags.SentenceId == sentence.Id
+                                      select new TagDto
+                                      {
+                                          Id = tag.Id,
+                                          Name = tag.Name,
+                                          Color = tag.Color
+                                      }).ToList()
                           }).ToListAsync();
         }
 

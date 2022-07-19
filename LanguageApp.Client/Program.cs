@@ -14,5 +14,6 @@ builder.Services.AddBlazoredModal();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7000/")});
 builder.Services.AddScoped<ISentenceService, SentenceService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ITagService, TagService>();
 
 await builder.Build().RunAsync();

@@ -34,7 +34,13 @@ else
                         <p>@item.TranslateText</p>
                     </div>
                 </div>
-                <div class="row m-1 mb-5">@item.CategoryName, @item.TagName</div>
+                <div class="row m-1 mb-5">@item.CategoryName</div>
+                <div class="row m-1 mb-5">
+                    @foreach (var tag in @item.Tags)
+                    {
+                        @tag.Id @tag.Name
+                    }
+                </div>
             </div>    
             <hr>
         }

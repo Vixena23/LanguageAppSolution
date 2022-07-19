@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LanguageApp.Api.Migrations
 {
     [DbContext(typeof(LanguageAppDbContext))]
-    [Migration("20220715094144_sentence")]
-    partial class sentence
+    [Migration("20220718160227_tags")]
+    partial class tags
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -72,9 +72,6 @@ namespace LanguageApp.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TagId")
-                        .HasColumnType("int");
-
                     b.Property<string>("TranslateText")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -82,16 +79,25 @@ namespace LanguageApp.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sentences");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryId = 1,
-                            OryginalText = "test1",
-                            TagId = 1,
-                            TranslateText = "red"
-                        });
+            modelBuilder.Entity("LanguageApp.Api.Entity.SentencesTag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("SentenceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SentencesTags");
                 });
 
             modelBuilder.Entity("LanguageApp.Api.Entity.Tag", b =>

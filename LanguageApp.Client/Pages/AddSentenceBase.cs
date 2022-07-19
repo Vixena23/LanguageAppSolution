@@ -10,11 +10,15 @@ namespace LanguageApp.Client.Pages
     {
         protected SentenceToAddDto newSentence { get; set; } = new SentenceToAddDto();
         protected IEnumerable<CategoryDto> Categories { get; set; }
+        protected List<TagDto> Tags { get; set; } = new List<TagDto>();
+        protected string[] selected = new[] { "white", "black" };
 
         [Inject]
         public ISentenceService SentenceService { get; set; }
         [Inject]
         public ICategoryService CategoryService { get; set; }
+        [Inject]
+        public ITagService TagService { get; set; }
 
         [CascadingParameter]
         public BlazoredModalInstance ModalInstance { get; set; }
@@ -22,6 +26,7 @@ namespace LanguageApp.Client.Pages
         protected override async Task OnInitializedAsync()
         {
             Categories = await CategoryService.GetCategoriesDtos();
+            Tags = await TagService.GetAllTags();
             newSentence.CategoryId = 1;
         }
 

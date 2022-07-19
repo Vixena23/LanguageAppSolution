@@ -14,25 +14,14 @@ namespace LanguageApp.Api.Repositories
         {
             _languageAppDbContext = languageAppDbContext;
         }
-        public async Task<IEnumerable<CategoryDto>> GetAllCategories()
+        public async Task<IEnumerable<Category>> GetAllCategories()
         {
-            return await (from category in _languageAppDbContext.Categories
-                          select new CategoryDto
-                          {
-                              Id = category.Id,
-                              Name = category.Name
-                          }).ToListAsync();
+            return await _languageAppDbContext.Categories.ToListAsync();
         }
 
-        public async Task<CategoryDto> GetCategory(int id)
+        public async Task<Category> GetCategory(int id)
         {
-            return await (from category in _languageAppDbContext.Categories
-                          where id == category.Id
-                          select new CategoryDto
-                          {
-                              Id = category.Id,
-                              Name = category.Name
-                          }).SingleOrDefaultAsync();
+            return await _languageAppDbContext.Categories.FindAsync(id);
         }
     }
 }

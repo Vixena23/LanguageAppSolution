@@ -15,6 +15,6 @@ namespace LanguageApp.Models.Dtos
         [Required(ErrorMessage = "Tłumaczenie nie może być puste")]
         public string TranslateText { get; set; }
         public int CategoryId { get; set; }
-        public int TagId { get; set; }
+        public List<TagDto> Tags { get; set; }
     }
 }

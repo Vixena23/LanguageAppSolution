@@ -5,7 +5,7 @@ namespace LanguageApp.Api.Repositories.Contracts
 {
     public interface ICategoryRepository
     {
-        Task<IEnumerable<CategoryDto>> GetAllCategories();
-        Task<CategoryDto> GetCategory(int id);
+        Task<IEnumerable<Category>> GetAllCategories();
+        Task<Category> GetCategory(int id);
     }
 }

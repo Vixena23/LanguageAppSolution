@@ -1,4 +1,5 @@
-﻿using LanguageApp.Api.Repositories.Contracts;
+﻿using LanguageApp.Api.Extensions;
+using LanguageApp.Api.Repositories.Contracts;
 using LanguageApp.Models.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,16 @@ namespace LanguageApp.Api.Controllers
     public class SentenceController : ControllerBase
     {
         private readonly ISentenceRepository _sentenceRepository;
+        private readonly ITagRepository _tagRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public SentenceController(ISentenceRepository sentenceRepository)
+        public SentenceController(ISentenceRepository sentenceRepository,
+                                  ITagRepository tagRepository,
+                                  ICategoryRepository categoryRepository)
         {
             _sentenceRepository = sentenceRepository;
+            _tagRepository = tagRepository;
+            _categoryRepository = categoryRepository;
         }
 
         [HttpPost]
@@ -28,14 +35,20 @@ namespace LanguageApp.Api.Controllers
                     return NoContent();
                 }
 
-                var newSentenceDto = await _sentenceRepository.GetSentence(newSentence.Id);
+                var category = await _categoryRepository.GetCategory(newSentence.CategoryId);
 
-                if (newSentenceDto == null)
+                if (category == null)
                 {
-                    throw new Exception($"Something went wrong when attempting to retrive a sentence (sentenceId:{newSentence.Id})");
+                    throw new Exception($"Something went wrong when attempting to retrive a category (categoryId:{newSentence.CategoryId})");
                 }
 
-                return Ok(newSentenceDto);
+                var sentencesTags = sentenceToAddDto.Tags.ConvertToEntity(newSentence.Id);
+
+                await _tagRepository.AddSentencesTags(sentencesTags);
+
+                var sentenceDto = newSentence.ConvertToDto(sentenceToAddDto.Tags, category);
+
+                return Ok(sentenceDto);
             }
             catch (Exception ex)
             {
@@ -46,14 +59,14 @@ namespace LanguageApp.Api.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<SentenceDto>> GetSentence(int id)
         {
-            var sentence = await _sentenceRepository.GetSentence(id);
+            var sentenceDto = await _sentenceRepository.GetSentence(id);
 
-            if (sentence == null)
+            if (sentenceDto == null)
             {
                 return NoContent();
             }
 
-            return Ok(sentence);
+            return Ok(sentenceDto);
         }
 
         [HttpGet]

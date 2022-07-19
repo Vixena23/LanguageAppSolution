@@ -47,20 +47,13 @@ namespace LanguageApp.Api.Data
                 Description = "test tag 2"
             });
 
-            //Sentences
-            modelBuilder.Entity<Sentence>().HasData(new Sentence
-            {
-                Id = 1,
-                OryginalText = "test1",
-                TranslateText = "red",
-                CategoryId = 1,
-                TagId = 1
-            });
+            
         }
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Sentence> Sentences { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Word> Words { get; set; }
+        public DbSet<SentencesTag> SentencesTags { get; set; }
     }
 }

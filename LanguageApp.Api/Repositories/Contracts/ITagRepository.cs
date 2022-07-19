@@ -1,4 +1,5 @@
 ﻿using LanguageApp.Api.Entity;
+using LanguageApp.Models.Dtos;
 
 namespace LanguageApp.Api.Repositories.Contracts
 {
@@ -6,5 +7,7 @@ namespace LanguageApp.Api.Repositories.Contracts
     {
         Task<IEnumerable<Tag>> GetAllTags();
         Task<Tag> GetTag(int id);
+        Task<List<TagDto>> GetSentencesTags(int sentenceId);
+        Task AddSentencesTags(List<SentencesTag> tags);
     }
 }

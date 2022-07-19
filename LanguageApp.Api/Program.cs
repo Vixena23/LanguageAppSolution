@@ -19,6 +19,7 @@ builder.Services.AddDbContextPool<LanguageAppDbContext>(options =>
 
 builder.Services.AddScoped<ISentenceRepository, SentenceRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ITagRepository, TagRepository>();
 
 var app = builder.Build();
 

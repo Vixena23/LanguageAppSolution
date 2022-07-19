@@ -13,8 +13,6 @@ namespace LanguageApp.Models.Dtos
         public string TranslateText { get; set; }
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
-        public int TagId { get; set; }
-        public string TagName { get; set; }
-        public string TagColor { get; set; }
+        public List<TagDto> Tags { get; set; }
     }
 }

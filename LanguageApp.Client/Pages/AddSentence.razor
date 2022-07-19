@@ -1,6 +1,7 @@
-﻿@inherits AddSentenceBase
+﻿@using LanguageApp.Client.Pages.MultiSelect
+@inherits AddSentenceBase
 
-@if (Categories == null)
+@if (Categories == null || Tags == null)
 {
     <div>Loading ...</div>
 }
@@ -46,10 +47,23 @@ else
                 Tag
             </label>
             <div class="col-sm-8">
-                <InputNumber id="tag" class="form-control" placeholder=1
-                           @bind-Value="newSentence.TagId" />
+                <select @bind=@selected multiple="multiple" class = "form-select" id="mySelect">
+                    @foreach (var tag in Tags)
+                    {
+                        <option value=@tag.Id>@tag.Name</option>
+                    }
+                </select>
             </div>
         </div>
+        <p>
+            <ul>
+                @foreach (var item in selected)
+                {
+                    <li>@item</li>
+                }
+            </ul>
+        </p>
+        <MultiSelect />
         <button type="submit" class="btn btn-primary">Submit</button>
         <button @onclick="Cancel" class="btn btn-secondary">Cancel</button>
     </EditForm>

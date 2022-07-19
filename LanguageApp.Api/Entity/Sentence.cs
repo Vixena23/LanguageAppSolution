@@ -6,6 +6,5 @@
         public string OryginalText { get; set; }
         public string TranslateText { get; set; }
         public int CategoryId { get; set; }
-        public int TagId { get; set; }
     }
 }

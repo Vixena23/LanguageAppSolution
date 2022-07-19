@@ -1,4 +1,5 @@
-﻿using LanguageApp.Api.Repositories.Contracts;
+﻿using LanguageApp.Api.Entity;
+using LanguageApp.Api.Repositories.Contracts;
 using LanguageApp.Models.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ namespace LanguageApp.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
+        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
             var categories = await _categoryRepository.GetAllCategories();
 
