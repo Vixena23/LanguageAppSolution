@@ -1,20 +1,25 @@
-﻿<div class="multiselect">
-    <div class="selectBox" onclick="showCheckboxes()">
+﻿@inherits MultiSelectBase
+
+<div class="multiselect" id="tagselect">
+    <div class="selectBox" onclick="showCheckboxes(this)">
       <select>
         <option>Select an option</option>
       </select>
       <div class="overSelect"></div>
     </div>
-    <div id="checkboxes">
+    <div class="checkboxes">
       <label for="one">
         <input type="checkbox" id="one" />First checkbox</label>
       <label for="two">
         <input type="checkbox" id="two" />Second checkbox</label>
       <label for="three">
         <input type="checkbox" id="three" />Third checkbox</label>
+      <label for="4">
+        <input type="checkbox" id="4" />Third checkbox</label>
+      <label for="5">
+        <input type="checkbox" id="5" />Third checkbox</label>
+      <label for="6">
+        <input type="checkbox" id="6" />Third checkbox</label>
     </div>
   </div>
 
-@code {
-
-}

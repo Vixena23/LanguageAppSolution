@@ -42,9 +42,13 @@ namespace LanguageApp.Api.Controllers
                     throw new Exception($"Something went wrong when attempting to retrive a category (categoryId:{newSentence.CategoryId})");
                 }
 
-                var sentencesTags = sentenceToAddDto.Tags.ConvertToEntity(newSentence.Id);
+                if (sentenceToAddDto.Tags.Count > 0)
+                {
+                    var sentencesTags = sentenceToAddDto.Tags.ConvertToEntity(newSentence.Id);
 
-                await _tagRepository.AddSentencesTags(sentencesTags);
+                    await _tagRepository.AddSentencesTags(sentencesTags);
+                }
+                
 
                 var sentenceDto = newSentence.ConvertToDto(sentenceToAddDto.Tags, category);
 

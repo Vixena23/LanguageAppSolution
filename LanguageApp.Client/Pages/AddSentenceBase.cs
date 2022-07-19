@@ -11,7 +11,7 @@ namespace LanguageApp.Client.Pages
         protected SentenceToAddDto newSentence { get; set; } = new SentenceToAddDto();
         protected IEnumerable<CategoryDto> Categories { get; set; }
         protected List<TagDto> Tags { get; set; } = new List<TagDto>();
-        protected string[] selected = new[] { "white", "black" };
+        protected List<TagDto> tagListSelected { get; set; } = new List<TagDto>();
 
         [Inject]
         public ISentenceService SentenceService { get; set; }
@@ -32,7 +32,8 @@ namespace LanguageApp.Client.Pages
 
         protected async Task HandleValidSubmit()
         {
-             await CloseModalAndPassVariable(newSentence);
+            newSentence.Tags = tagListSelected;
+            await CloseModalAndPassVariable(newSentence);
         }
 
         protected async Task Cancel()
@@ -56,8 +57,36 @@ namespace LanguageApp.Client.Pages
 
         private async Task<SentenceDto> AddSentence(SentenceToAddDto sentenceToAddDto)
         {
+
             var result = await SentenceService.AddSentence(sentenceToAddDto);
             return result;
+        }
+
+        private int _tagId = 0;
+        protected int TagId
+        {
+            get
+            {
+                return _tagId;
+            }
+            set
+            {
+                UpdateTag(value);
+                _tagId = 0;
+            }
+        }
+
+        private void UpdateTag(int tagId)
+        {
+            var tag = Tags.Find(x => x.Id == tagId);
+            tagListSelected.Add(tag);
+            Tags.Remove(tag);
+        }
+        protected void RemoveTag(int tagId)
+        {
+            var tag = tagListSelected.Find(x => x.Id == tagId);
+            Tags.Add(tag);
+            tagListSelected.Remove(tag);
         }
     }
 }

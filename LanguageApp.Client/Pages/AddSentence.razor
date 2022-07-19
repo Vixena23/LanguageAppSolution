@@ -47,7 +47,8 @@ else
                 Tag
             </label>
             <div class="col-sm-8">
-                <select @bind=@selected multiple="multiple" class = "form-select" id="mySelect">
+                <select @bind="TagId" class = "form-select" id="mySelect">
+                     <option value="0" selected disabled hidden>Choose here</option>
                     @foreach (var tag in Tags)
                     {
                         <option value=@tag.Id>@tag.Name</option>
@@ -55,15 +56,16 @@ else
                 </select>
             </div>
         </div>
-        <p>
-            <ul>
-                @foreach (var item in selected)
-                {
-                    <li>@item</li>
-                }
-            </ul>
-        </p>
-        <MultiSelect />
+        @if (tagListSelected.Count > 0)
+        {
+            <p>
+                Click to remove
+                @foreach (var tag in tagListSelected)
+                    {
+                        <div @onclick="@(() => RemoveTag(@tag.Id))">@tag.Id - @tag.Name</div>
+                    }
+            </p>
+        }
         <button type="submit" class="btn btn-primary">Submit</button>
         <button @onclick="Cancel" class="btn btn-secondary">Cancel</button>
     </EditForm>
